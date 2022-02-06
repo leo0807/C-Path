@@ -7,7 +7,13 @@
 #define HEIGHT 32
 static char display[WIDTH * HEIGHT];
 
-void fill(char p)
+typedef enum
+{
+  BACK = 0,
+  FORE = 1,
+} Pixel;
+
+void fill(Pixel p)
 {
   memset(display, p, WIDTH * HEIGHT);
 }
