@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 #define LA_IMPLEMENTATION
 #include "./la.h"
 
 #define WIDTH 32
 #define HEIGHT 32
 static char display[WIDTH * HEIGHT];
+static_assert(HEIGHT % 2 == 0, "If the amount of display rows is not divisible by 2 we can't properly compress it. See show(void) function");
 
 typedef enum
 {
@@ -15,7 +17,14 @@ typedef enum
 
 void fill(Pixel p)
 {
-  memset(display, p, WIDTH * HEIGHT);
+  // memset(display, p, WIDTH * HEIGHT);
+  Pixel *ptr = display;
+  size_t n = WIDTH * HEIGHT;
+  while (n-- > 0)
+  {
+    /* code */
+    *ptr++ = p;
+  }
 }
 
 void circle(V2i center, int radius)
@@ -42,9 +51,23 @@ void circle(V2i center, int radius)
 
 void show(void)
 {
-  for (int y = 0; y < HEIGHT; ++y)
+  static char row[WIDTH];
+  //                t  b
+  static char table[2][2] = {
+      //
+      {' ', '_'}, // 0
+      {'^', 'C'}, // 1
+  };
+
+  for (int y = 0; y < HEIGHT / 2; ++y)
   {
-    fwrite(display[y * WIDTH], WIDTH, 1, stdout);
+    for (int x = 0; x < WIDTH; x++)
+    {
+      Pixel t = display[2 * y * WIDTH + x];
+      Pixel b = display[(2 * y + 1) * WIDTH + x];
+    }
+
+    fwrite(&display[y * WIDTH], WIDTH, 1, stdout);
     fputc('\n', stdout);
   }
 }
