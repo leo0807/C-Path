@@ -87,21 +87,30 @@ void back(void)
   printf("\x1b[%dD", WIDTH);
   printf("\x1b[%dA", HEIGHT / 2);
 }
+static V2f pos;
+static V2f vel;
+void reset(void)
+{
+  pos = v2ff(-RADIUS);
+  vel = v2f(50.0f, 0.0f);
+}
 int main(void)
 {
-  V2f pos = v2ff(RADIUS);
-  V2f vel = v2f(50.0f, 0.0f);
-  V2f gravity = v2f(0.0f, GRAVITY);
 
-  // int quit = 0;
-  while (pos.x < WIDTH + RADIUS + RADIUS * 0.5f)
+  V2f gravity = v2f(0.0f, GRAVITY);
+  reset();
+  while (1)
   {
-    vel = v2f_sum(vel, v2f_mul(gravity, v2ff(DT)));
+    vel = v2f_sum(vel, v2f(0.0f, GRAVITY * DT));
     pos = v2f_sum(pos, v2f_mul(vel, v2ff(DT)));
     if (pos.y > HEIGHT - RADIUS)
     {
       pos.y = HEIGHT - RADIUS;
       vel.y *= DAMPER;
+    }
+    if (pos.x >= WIDTH + RADIUS + RADIUS * 0.5f)
+    {
+      reset();
     }
     fill(BACK);
     circle(pos, RADIUS);
