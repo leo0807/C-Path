@@ -64,18 +64,6 @@ void heap_collect()
 }
 int main()
 {
-  // for (size_t i = 0; i < 100; i++)
-  // {
-  //   heap_alloc(i);
-  // }
-
-  // char *root = heap_alloc(26);
-  // for (size_t i = 0; i < 26; i++)
-  // {
-  //   root[i] = i + 'A';
-  // }
-  // heap_dump_alloced_chunks();
-  // heap_free(root);
   for (size_t i = 0; i < 5; i++)
   {
     printf("%p\n", malloc(0));
